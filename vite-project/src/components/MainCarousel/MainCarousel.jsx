@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MainCarousel.css';
-import { ORIGINAL_DATA } from "../../data/projectsData.";
+import { ORIGINAL_DATA } from "../data/projectsData";
 
 // 무한 스크롤용 데이터 5세트 확장 (충분한 관성 버퍼 확보)
 const PROJECT_DATA = [
