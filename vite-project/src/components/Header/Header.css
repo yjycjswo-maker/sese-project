@@ -1,0 +1,45 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  color: #000000;
+}
+
+.header-logo a {
+  font-size: 5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header-nav ul {
+  display: flex;
+  gap: 40px;
+  list-style: none;
+}
+
+.header-nav a {
+  font-size: 1rem;
+  font-weight: 500;
+  transition: opacity 0.3s ease;
+}
+
+.header-nav a:hover {
+  opacity: 0.5;
+}
+
+/* 모바일 반응형 처리 */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px;
+  }
+  
+  .header-nav ul {
+    gap: 20px;
+  }
+}
