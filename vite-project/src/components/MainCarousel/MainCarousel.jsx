@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // 1. useNavigate 추가
 import './MainCarousel.css';
 import { ORIGINAL_DATA } from "../data/projectsData";
 
@@ -21,6 +22,7 @@ const CENTER_ROW_INDEX = 5;  // 0~10 총 11개 줄 중 6번째 줄 (인덱스 5)
 
 export default function MainCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate(); // 2. navigate 함수 선언
 
   // 위치 제어를 위한 Ref
   const targetY = useRef(CENTER_SET_OFFSET);
@@ -72,17 +74,16 @@ export default function MainCarousel() {
     return () => cancelAnimationFrame(reqId.current);
   }, []);
 
-  // 2. [수정] 전역 window 휠 이벤트 처리 (상단 배너 등 어디서나 스크롤 가능)
+  // 2. 전역 window 휠 이벤트 처리
   useEffect(() => {
     const handleWheel = (e) => {
       targetY.current += e.deltaY * 0.8;
     };
 
-    // window 객체에 휠 리스너 등록
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    window.addEventListener('wheel', handleWheel, { passive: true, capture: true});
 
     return () => {
-      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('wheel', handleWheel, { capture: true });
     };
   }, []);
 
@@ -92,8 +93,14 @@ export default function MainCarousel() {
   const formattedCurrentIndex = String(activeIndex + 1).padStart(2, '0');
   const formattedTotalCount = String(TOTAL_ORIGINAL).padStart(2, '0');
 
+  // 3. 상세페이지 이동 처리 함수
+  const handleOpenDetail = () => {
+    if (current && current.id) {
+      navigate(`/project/${current.id}`);
+    }
+  };
+
   return (
-    // [수정] section 태그의 onWheel 제거
     <section className="main-carousel">
       {/* 1. 좌측 프로젝트 11개 행 고정 목록 */}
       <aside className="project-list-sidebar">
@@ -119,11 +126,23 @@ export default function MainCarousel() {
         </div>
       </aside>
 
-      {/* 2. 중앙 고정 레이어 (카테고리, 대괄호, 태그) */}
+      {/* 2. 중앙 고정 레이어 (카테고리, 대괄호, 태그) - [ ] 클릭 시 상세 이동 */}
       <div className="carousel-center-wrapper">
         <div className="info-left">{current.category}</div>
-        <span className="bracket left-bracket">[</span>
-        <span className="bracket right-bracket">]</span>
+        <span 
+          className="bracket left-bracket" 
+          onClick={handleOpenDetail} 
+          style={{ cursor: "pointer" }}
+        >
+          [
+        </span>
+        <span 
+          className="bracket right-bracket" 
+          onClick={handleOpenDetail} 
+          style={{ cursor: "pointer" }}
+        >
+          ]
+        </span>
         <div className="info-right">{current.tags}</div>
       </div>
 
@@ -139,9 +158,13 @@ export default function MainCarousel() {
               <div 
                 key={`${item.id}-${index}`} 
                 className={`carousel-image-box ${isActive ? "active" : ""}`}
-                /* [수정] 이미지 클릭 시 해당 위치로 부드럽게 이동 */
+                style={{ cursor: "pointer" }}
                 onClick={() => {
-                  targetY.current = index * ITEM_HEIGHT;
+                  if (isActive) {
+                    handleOpenDetail(); // 정중앙 이미지 클릭 시 상세페이지 이동
+                  } else {
+                    targetY.current = index * ITEM_HEIGHT; // 중앙이 아닌 이미지 클릭 시 해당 위치로 스크롤
+                  }
                 }}
               >
                 <img src={item.image} alt={item.title} />

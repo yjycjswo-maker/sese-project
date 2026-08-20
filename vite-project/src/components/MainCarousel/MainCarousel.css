@@ -114,7 +114,7 @@
   left: 50%;
   transform: translate(-50%, -85px); /* 정중앙 정렬 오프셋 */
   width: 120px;
-  z-index: 6; /* 중앙 고정 레이어보다 앞으로 배치 */
+  z-index: 999; /* 중앙 고정 레이어보다 앞으로 배치 */
   cursor: pointer;
   pointer-events: auto; /* 마우스 호버 및 클릭 처리 최상위 수신 */
 }

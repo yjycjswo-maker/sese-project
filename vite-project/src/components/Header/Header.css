@@ -9,6 +9,7 @@
   align-items: center;
   z-index: 100;
   color: #000000;
+  pointer-events: auto;
 }
 
 .header-logo a {

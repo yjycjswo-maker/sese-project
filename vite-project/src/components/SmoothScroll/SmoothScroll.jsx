@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import gsap from 'gsap';
-import Lenis from 'lenis'; // 최신 패키지명 적용
+import Lenis from 'lenis'; 
 
 export default function SmoothScroll({ children }) {
   useEffect(() => {
