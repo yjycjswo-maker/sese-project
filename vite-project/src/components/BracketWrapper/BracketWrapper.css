@@ -1,8 +1,11 @@
-.bracket-fixed-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+@font-face {
+    font-family: 'MoonHalo';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2102-01@1.0/dalmoori.woff') format('woff');
+    font-weight: normal;
+    font-display: swap;
+}
+
+.bracket-container {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,20 +13,20 @@
   pointer-events: none;
 }
 
-.bracket-fixed-container .bracket {
-  /* 폰트 패밀리 적용 */
-  font-family: 'Monorail', sans-serif;
-  font-size: 11rem;
-  font-weight: 100;
+.bracket-container .bracket {
+  font-family: 'KblJump', sans-serif;
+  font-size: 10rem;
+  font-weight: 500;
   color: #000000;
   line-height: 1;
   user-select: none;
 }
 
-.bracket-fixed-container .left-bracket {
-  margin-right: 20px;
+/* 기본 대괄호 간격 (상세페이지 등에서 기본으로 쓰임) */
+.bracket-container .left-bracket {
+  margin-right: 50px;
 }
 
-.bracket-fixed-container .right-bracket {
-  margin-left: 20px;
+.bracket-container .right-bracket {
+  margin-left: 50px;
 }

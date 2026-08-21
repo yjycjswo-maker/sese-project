@@ -52,7 +52,7 @@
   font-weight: 600;
 }
 
-/* 2. 중앙 컨테이너 및 대괄호 효과 */
+/* 2. 메인 중앙 컨테이너 배치 */
 .carousel-center-wrapper {
   position: absolute;
   top: 50%;
@@ -62,10 +62,6 @@
   align-items: center;
   justify-content: center;
   z-index: 3;
-  pointer-events: none;
-}
-
-.carousel-center-wrapper * {
   pointer-events: none;
 }
 
@@ -88,32 +84,24 @@
   margin-left: 100px;
 }
 
-.bracket {
-  font-family: 'Monorail', sans-serif !important;
-  font-size: 11rem;
-  font-weight: 100;
-  color: #000000;
-  line-height: 1;
-  user-select: none;
-}
-
-.bracket.left-bracket {
-  margin-right: 150px;
+/* 메인페이지 평소 상태: 대괄호 간격 넓게 설정 */
+.carousel-center-wrapper .left-bracket {
+  margin-right: 150px !important;
   transition: margin-right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.bracket.right-bracket {
-  margin-left: 150px;
+.carousel-center-wrapper .right-bracket {
+  margin-left: 150px !important;
   transition: margin-left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* [ ] 사이가 좁혀지는 스타일 */
+/* [ ] 사이가 좁혀지는 애니메이션 스타일 */
 .carousel-center-wrapper.squeezed .left-bracket {
-  margin-right: 20px !important;
+  margin-right: 50px !important;
 }
 
 .carousel-center-wrapper.squeezed .right-bracket {
-  margin-left: 20px !important;
+  margin-left: 50px !important;
 }
 
 /* 3. 세로 무한 트랙 컨테이너 */
@@ -129,7 +117,6 @@
   transition: opacity 0.3s ease;
 }
 
-/* 대괄호가 좁혀질 때 전체 이미지 트랙 서서히 사라짐 */
 .carousel-center-wrapper.squeezed ~ .image-track-wrapper {
   opacity: 0;
 }
@@ -159,7 +146,6 @@
   transform: scale(1);
 }
 
-/* 우측 이동 없이 그 자리에서 바로 사라지는 효과 */
 .carousel-image-box.animating {
   opacity: 0 !important;
   transition: opacity 0.3s ease !important;
@@ -190,19 +176,6 @@
   user-select: none;
 }
 
-.current-num {
-  font-size: 0.6rem;
-  font-weight: 100;
-  color: #000000;
-}
-
-.num-divider {
-  font-size: 0.6rem;
-  color: #aaaaaa;
-}
-
-.total-num {
-  font-size: 0.6rem;
-  font-weight: 100;
-  color: #aaaaaa;
-}
+.current-num { font-size: 0.6rem; font-weight: 100; color: #000000; }
+.num-divider { font-size: 0.6rem; color: #aaaaaa; }
+.total-num { font-size: 0.6rem; font-weight: 100; color: #aaaaaa; }
