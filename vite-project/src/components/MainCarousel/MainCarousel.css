@@ -18,7 +18,6 @@
   z-index: 10;
 }
 
-/* 11개 행 고정 마스크 영역 (22px * 11줄 = 242px) */
 .project-list-viewport {
   height: 242px;
   overflow: hidden;
@@ -48,13 +47,12 @@
   color: #888888;
 }
 
-/* 6번째 위치에 오는 선택 상태 */
 .project-item.active {
   color: #000000;
   font-weight: 600;
 }
 
-/* 2. 중앙 컨테이너 (고정 레이어) */
+/* 2. 중앙 컨테이너 및 대괄호 효과 */
 .carousel-center-wrapper {
   position: absolute;
   top: 50%;
@@ -63,11 +61,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3; /* 이미지 트랙(z-index: 6)보다 뒤로 배치 */
-  pointer-events: none; /* 하위 요소로 클릭 이벤트 통과 */
+  z-index: 3;
+  pointer-events: none;
 }
 
-/* 대괄호와 중앙 텍스트 전체에 이벤트 통과 적용 */
 .carousel-center-wrapper * {
   pointer-events: none;
 }
@@ -92,7 +89,8 @@
 }
 
 .bracket {
-  font-size: 6rem;
+  font-family: 'Monorail', sans-serif !important;
+  font-size: 11rem;
   font-weight: 100;
   color: #000000;
   line-height: 1;
@@ -101,10 +99,21 @@
 
 .bracket.left-bracket {
   margin-right: 150px;
+  transition: margin-right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .bracket.right-bracket {
   margin-left: 150px;
+  transition: margin-left 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* [ ] 사이가 좁혀지는 스타일 */
+.carousel-center-wrapper.squeezed .left-bracket {
+  margin-right: 20px !important;
+}
+
+.carousel-center-wrapper.squeezed .right-bracket {
+  margin-left: 20px !important;
 }
 
 /* 3. 세로 무한 트랙 컨테이너 */
@@ -112,22 +121,27 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -85px); /* 정중앙 정렬 오프셋 */
+  transform: translate(-50%, -85px);
   width: 120px;
-  z-index: 999; /* 중앙 고정 레이어보다 앞으로 배치 */
+  z-index: 999;
   cursor: pointer;
-  pointer-events: auto; /* 마우스 호버 및 클릭 처리 최상위 수신 */
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* 대괄호가 좁혀질 때 전체 이미지 트랙 서서히 사라짐 */
+.carousel-center-wrapper.squeezed ~ .image-track-wrapper {
+  opacity: 0;
 }
 
 .image-track {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px; /* 이미지 간격 5px */
+  gap: 5px;
   will-change: transform; 
 }
 
-/* 중앙 이미지 박스 규격 */
 .carousel-image-box {
   width: 120px;
   height: 170px;
@@ -145,12 +159,22 @@
   transform: scale(1);
 }
 
+/* 우측 이동 없이 그 자리에서 바로 사라지는 효과 */
+.carousel-image-box.animating {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+.carousel-center-wrapper.squeezed ~ .image-track-wrapper .carousel-image-box:not(.animating) {
+  opacity: 0;
+}
+
 .carousel-image-box img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  pointer-events: none; /* 이미지 자체 드래그 방지 */
+  pointer-events: none;
 }
 
 /* 4. 우측 프로젝트 번호 사이드바 */

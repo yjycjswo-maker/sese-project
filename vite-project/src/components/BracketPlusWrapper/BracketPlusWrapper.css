@@ -1,0 +1,62 @@
+/* BracketPlusWrapper.css */
+
+.bracket-fixed-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  pointer-events: none;
+  
+  /* [핵심] 이미 좁혀진 최종 상태(gap: -40px)를 기본값으로 잡고, 애니메이션을 실행합니다 */
+  gap: -40px; 
+  animation: collapseBrackets 0.4s ease-out forwards;
+}
+
+.bracket-fixed-container .bracket {
+  font-family: 'Monorail', sans-serif !important;
+  font-size: 11rem !important;
+  font-weight: 100;
+  color: #000000;
+  line-height: 1;
+  user-select: none;
+}
+
+/* 십자가(+) 스타일 설정 */
+.bracket-fixed-container .center-plus {
+  font-family: 'Monorail', sans-serif !important;
+  font-size: 4rem !important;
+  font-weight: 100;
+  color: #e6e5e5;
+  line-height: 1;
+  user-select: none;
+  position: relative;
+  top: 2px;
+
+  /* 처음에 숨겨져 있다가 0.4초 뒤에 나타남 */
+  opacity: 0;
+  animation: fadeInPlus 0.4s ease-out 0.4s forwards; 
+}
+
+/* 애니메이션: 넓은 상태에서 좁혀진 상태로 이동 후 'forwards'로 고정 */
+@keyframes collapseBrackets {
+  0% {
+    gap: 30px; 
+  }
+  100% {
+    gap: -40px; /* 완전히 모인 상태 (이 상태로 영구 고정) */
+  }
+}
+
+/* 십자가 나타나기 */
+@keyframes fadeInPlus {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

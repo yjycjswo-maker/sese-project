@@ -1,7 +1,9 @@
+// MainCarousel.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'; // 1. useNavigate 추가
+import { useNavigate } from 'react-router-dom';
 import './MainCarousel.css';
 import { ORIGINAL_DATA } from "../data/projectsData";
+import BracketWrapper from "../BracketWrapper/BracketWrapper";
 
 // 무한 스크롤용 데이터 5세트 확장 (충분한 관성 버퍼 확보)
 const PROJECT_DATA = [
@@ -22,7 +24,8 @@ const CENTER_ROW_INDEX = 5;  // 0~10 총 11개 줄 중 6번째 줄 (인덱스 5)
 
 export default function MainCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const navigate = useNavigate(); // 2. navigate 함수 선언
+  const [animatingId, setAnimatingId] = useState(null); // 대괄호 좁혀지는 애니메이션용 상태
+  const navigate = useNavigate();
 
   // 위치 제어를 위한 Ref
   const targetY = useRef(CENTER_SET_OFFSET);
@@ -93,10 +96,13 @@ export default function MainCarousel() {
   const formattedCurrentIndex = String(activeIndex + 1).padStart(2, '0');
   const formattedTotalCount = String(TOTAL_ORIGINAL).padStart(2, '0');
 
-  // 3. 상세페이지 이동 처리 함수
+  // 3. 상세페이지 이동 처리 함수 (대괄호 좁혀지는 애니메이션 연동)
   const handleOpenDetail = () => {
     if (current && current.id) {
-      navigate(`/project/${current.id}`);
+      setAnimatingId(current.id);
+      setTimeout(() => {
+        navigate(`/project/${current.id}`);
+      }, 400); // CSS 애니메이션 타이밍에 맞춰 이동
     }
   };
 
@@ -126,23 +132,26 @@ export default function MainCarousel() {
         </div>
       </aside>
 
-      {/* 2. 중앙 고정 레이어 (카테고리, 대괄호, 태그) - [ ] 클릭 시 상세 이동 */}
-      <div className="carousel-center-wrapper">
+      {/* 2. 중앙 고정 레이어 (카테고리, 대괄호, 태그) - 기존 구조 및 BracketWrapper 결합 */}
+      <div className={`carousel-center-wrapper ${animatingId ? "squeezed" : ""}`}>
         <div className="info-left">{current.category}</div>
+        
+        {/* 기존의 대괄호 배치 및 클릭 이벤트 보존 */}
         <span 
           className="bracket left-bracket" 
           onClick={handleOpenDetail} 
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", pointerEvents: "auto" }}
         >
           [
         </span>
         <span 
           className="bracket right-bracket" 
           onClick={handleOpenDetail} 
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", pointerEvents: "auto" }}
         >
           ]
         </span>
+
         <div className="info-right">{current.tags}</div>
       </div>
 
@@ -153,11 +162,12 @@ export default function MainCarousel() {
             const itemOffset = index * ITEM_HEIGHT;
             const distance = Math.abs(currentY.current - itemOffset);
             const isActive = distance < ITEM_HEIGHT * 0.5;
+            const isTarget = animatingId === item.id;
 
             return (
               <div 
                 key={`${item.id}-${index}`} 
-                className={`carousel-image-box ${isActive ? "active" : ""}`}
+                className={`carousel-image-box ${isActive ? "active" : ""} ${isTarget ? "animating" : ""}`}
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   if (isActive) {
